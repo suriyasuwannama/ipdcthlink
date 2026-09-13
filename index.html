@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CTH IPD Link Portal | ห้องยาผู้ป่วยใน โรงพยาบาลจอมทอง</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Sarabun Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col antialiased selection:bg-teal-600 selection:text-white">
+
+  <!-- Header Banner -->
+  <header class="bg-gradient-to-r from-teal-800 via-teal-700 to-emerald-700 text-white shadow-lg relative overflow-hidden">
+    <div class="absolute -right-10 -bottom-10 opacity-10 pointer-events-none">
+      <svg class="w-96 h-96" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-5H6v-2h5V7h2v5h5v2h-5v5z"/></svg>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        
+        <!-- Hospital Branding & Title -->
+        <div class="flex items-center gap-4">
+          <div class="w-14 h-14 sm:w-16 sm:h-16 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 flex items-center justify-center text-3xl shadow-inner shrink-0">
+            🏥
+          </div>
+          <div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="bg-emerald-400/20 text-emerald-100 text-xs font-semibold px-2.5 py-0.5 rounded-full border border-emerald-300/30">
+                โรงพยาบาลจอมทอง (CTH)
+              </span>
+              <span id="admin-badge" class="hidden bg-amber-400 text-amber-950 text-xs font-bold px-2.5 py-0.5 rounded-full shadow-sm animate-pulse">
+                ⚙️ โหมดจัดการลิงก์ (Admin)
+              </span>
+            </div>
+            <h1 class="text-2xl sm:text-3xl font-bold tracking-tight mt-0.5">
+              CTH IPD LINK PORTAL
+            </h1>
+            <p class="text-xs sm:text-sm text-teal-100 opacity-90 font-light">
+              ศูนย์รวมลิงก์ระบบงานและคู่มือการปฏิบัติงาน ห้องยาผู้ป่วยใน (Inpatient Pharmacy)
+            </p>
+          </div>
+        </div>
+
+        <!-- Action Controls -->
+        <div class="flex items-center gap-2 flex-wrap sm:flex-nowrap">
+          <button id="add-link-btn" class="hidden px-4 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white font-medium text-sm rounded-xl transition-all shadow-md flex items-center gap-1.5 active:scale-95">
+            <span class="text-lg leading-none">+</span> เพิ่มลิงก์ใหม่
+          </button>
+          
+          <button id="admin-toggle-btn" class="px-4 py-2.5 bg-teal-700 hover:bg-teal-800 text-white font-medium text-sm rounded-xl transition-all shadow-md flex items-center gap-1.5 active:scale-95">
+            ⚙️ โหมดจัดการลิงก์
+          </button>
+
+          <!-- Dropdown Backup Tools -->
+          <div class="flex items-center gap-1 bg-white/10 p-1 rounded-xl border border-white/20">
+            <button id="export-json-btn" title="ส่งออกไฟล์สำรองข้อมูล (Export JSON)" class="p-2 hover:bg-white/20 text-white rounded-lg transition-colors text-xs flex items-center gap-1 font-medium">
+              📥 สำรองข้อมูล
+            </button>
+            <button id="import-json-btn" title="นำเข้าไฟล์สำรองข้อมูล (Import JSON)" class="p-2 hover:bg-white/20 text-white rounded-lg transition-colors text-xs flex items-center gap-1 font-medium">
+              📤 นำเข้า
+            </button>
+            <input type="file" id="import-file-input" accept=".json" class="hidden" />
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Search & Category Filter Navigation -->
+  <nav class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        
+        <!-- Live Search Input -->
+        <div class="relative flex-1 max-w-lg">
+          <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400 text-base">
+            🔍
+          </div>
+          <input 
+            type="text" 
+            id="search-input" 
+            placeholder="ค้นหาชื่อระบบ, ลิงก์, แท็ก หรือคำอธิบาย..." 
+            class="w-full pl-10 pr-10 py-2.5 bg-slate-50 border border-slate-300 text-slate-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-teal-600 focus:bg-white transition-all placeholder:text-slate-400"
+          />
+          <button id="clear-search-btn" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 text-sm">
+            ✕
+          </button>
+        </div>
+
+        <!-- Filter Category Pills Container -->
+        <div id="category-filter-container" class="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0 scrollbar-none">
+          <!-- Dynamically populated by app.js -->
+        </div>
+
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content Layout -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    
+    <!-- Dynamic Cards Grid -->
+    <div id="main-content-area">
+      <!-- Loaded dynamically via js/app.js -->
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-slate-200 py-6 text-slate-500 text-xs mt-auto">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div class="flex items-center gap-2">
+        <span class="text-base">💊</span>
+        <span><strong>CTH IPD Link Portal</strong> &bull; กลุ่มงานเภสัชกรรม โรงพยาบาลจอมทอง อ.จอมทอง จ.เชียงใหม่</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <button id="reset-default-btn" class="text-slate-400 hover:text-slate-600 underline">
+          คืนค่าลิงก์เริ่มต้น
+        </button>
+        <span>เวอร์ชัน 1.0 (2026)</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col items-end pointer-events-none"></div>
+
+  <!-- Add / Edit Link Modal -->
+  <div id="link-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+    <div class="modal-backdrop fixed inset-0"></div>
+
+    <div class="bg-white rounded-3xl max-w-2xl w-full shadow-2xl z-10 overflow-hidden modal-enter max-h-[90vh] flex flex-col border border-slate-100">
+      
+      <!-- Modal Header -->
+      <div class="bg-teal-800 text-white px-6 py-4 flex items-center justify-between">
+        <h3 id="link-modal-title" class="text-lg font-bold flex items-center gap-2">
+          ➕ เพิ่มลิงก์ใหม่
+        </h3>
+        <button id="link-modal-close" class="text-teal-200 hover:text-white text-xl leading-none font-bold p-1">
+          ✕
+        </button>
+      </div>
+
+      <!-- Modal Form Body -->
+      <form id="link-form" class="p-6 overflow-y-auto space-y-4 text-sm flex-1">
+        
+        <!-- Title & URL -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">ชื่อระบบ / ลิงก์งาน <span class="text-rose-500">*</span></label>
+            <input type="text" id="modal-link-title" required placeholder="เช่น ระบบสั่งยา HOMC IPD" class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-600 focus:outline-none" />
+          </div>
+
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">URL / เว็บลิงก์ <span class="text-rose-500">*</span></label>
+            <input type="url" id="modal-link-url" required placeholder="http://... หรือ https://..." class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-600 focus:outline-none" />
+          </div>
+        </div>
+
+        <!-- Category & Badge -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">หมวดหมู่ <span class="text-rose-500">*</span></label>
+            <select id="modal-link-category" required class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-600 focus:outline-none bg-white">
+              <!-- Options populated by app.js -->
+            </select>
+          </div>
+
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">ข้อความแท็กย่อ (Badge)</label>
+            <input type="text" id="modal-link-badge" placeholder="เช่น HOMC, SOP, MedRec" class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-600 focus:outline-none" />
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">คำอธิบายอย่างย่อ</label>
+          <input type="text" id="modal-link-description" placeholder="รายละเอียดของระบบ เช่น ตรวจสอบประวัติการสั่งยาผู้ป่วยใน" class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-600 focus:outline-none" />
+        </div>
+
+        <!-- Color Theme & Target -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">ธีมสีการ์ด</label>
+            <select id="modal-link-color" class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-600 focus:outline-none bg-white">
+              <option value="emerald">🟢 เขียวมรกต (Emerald)</option>
+              <option value="teal">🔷 ฟ้าอมเขียว (Teal)</option>
+              <option value="blue">🟦 น้ำเงิน (Blue)</option>
+              <option value="indigo">🔮 คราม (Indigo)</option>
+              <option value="purple">🟪 ม่วง (Purple)</option>
+              <option value="amber">🟠 ส้มอมเหลือง (Amber)</option>
+              <option value="rose">🔴 แดงกุหลาบ (Rose)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">การเปิดลิงก์</label>
+            <select id="modal-link-target" class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-600 focus:outline-none bg-white">
+              <option value="_blank">เปิดในแท็บใหม่ (_blank)</option>
+              <option value="_self">เปิดในหน้าเดิม (_self)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Icon Selector Section -->
+        <div class="border-t border-slate-200 pt-4 mt-2">
+          <label class="block font-semibold text-slate-700 mb-2">เลือกรูปแบบไอคอน / รูปภาพ <span class="text-rose-500">*</span></label>
+          
+          <div class="flex items-center gap-4 mb-3">
+            <label class="flex items-center gap-1.5 cursor-pointer font-medium text-slate-700">
+              <input type="radio" name="iconType" id="icon-type-preset" value="preset" checked class="text-teal-600 focus:ring-teal-500" />
+              <span>ไอคอนมาตรฐาน (Preset)</span>
+            </label>
+            <label class="flex items-center gap-1.5 cursor-pointer font-medium text-slate-700">
+              <input type="radio" name="iconType" id="icon-type-url" value="url" class="text-teal-600 focus:ring-teal-500" />
+              <span>URL รูปภาพ</span>
+            </label>
+            <label class="flex items-center gap-1.5 cursor-pointer font-medium text-slate-700">
+              <input type="radio" name="iconType" id="icon-type-file" value="file" class="text-teal-600 focus:ring-teal-500" />
+              <span>อัปโหลดรูปภาพ</span>
+            </label>
+          </div>
+
+          <!-- Preset Icon Picker -->
+          <div id="icon-preset-wrapper" class="space-y-2">
+            <input type="hidden" id="modal-selected-preset" value="Pill" />
+            <div id="preset-icon-grid" class="grid grid-cols-7 sm:grid-cols-10 gap-2 max-h-36 overflow-y-auto p-2 border border-slate-200 rounded-xl bg-slate-50">
+              <!-- Rendered via app.js -->
+            </div>
+          </div>
+
+          <!-- Custom URL Input -->
+          <div id="icon-url-wrapper" class="hidden">
+            <input type="url" id="modal-icon-url" placeholder="https://example.com/logo.png" class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-600 focus:outline-none" />
+          </div>
+
+          <!-- File Upload Input -->
+          <div id="icon-file-wrapper" class="hidden space-y-2">
+            <input type="file" id="icon-file-input" accept="image/*" class="w-full text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100 cursor-pointer" />
+            <div id="file-preview-box" class="hidden flex items-center gap-3 p-2 bg-slate-50 border border-slate-200 rounded-xl">
+              <img id="file-preview-img" src="" alt="Preview" class="w-12 h-12 object-contain rounded bg-white p-1 border border-slate-200" />
+              <span class="text-xs text-slate-500">ตัวอย่างรูปภาพที่อัปโหลด</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pin Checkbox -->
+        <div class="flex items-center gap-2 border-t border-slate-200 pt-3">
+          <input type="checkbox" id="modal-link-pinned" class="w-4 h-4 text-teal-600 rounded focus:ring-teal-500" />
+          <label for="modal-link-pinned" class="font-medium text-slate-700 cursor-pointer">⭐ ปักหมุดไว้ที่รายการใช้บ่อย (Pinned)</label>
+        </div>
+
+        <!-- Modal Footer Actions -->
+        <div class="border-t border-slate-200 pt-4 flex items-center justify-end gap-3">
+          <button type="button" id="link-modal-cancel" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-medium">
+            ยกเลิก
+          </button>
+          <button type="submit" class="px-5 py-2 bg-teal-700 hover:bg-teal-800 text-white font-medium rounded-xl shadow-md">
+            บันทึกข้อมูล
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+  <!-- Delete Confirm Modal -->
+  <div id="delete-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+    <div class="modal-backdrop fixed inset-0"></div>
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl z-10 modal-enter text-center">
+      <div class="w-16 h-16 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
+        🗑️
+      </div>
+      <h3 class="text-lg font-bold text-slate-800 mb-2">ยืนยันการลบลิงก์</h3>
+      <p class="text-slate-600 text-sm mb-6">
+        คุณต้องการลบลิงก์ <strong id="delete-link-name" class="text-rose-600"></strong> ใช่หรือไม่? การดำเนินการนี้ไม่สามารถย้อนกลับได้
+      </p>
+      <div class="flex items-center justify-center gap-3">
+        <button id="delete-modal-cancel" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-medium text-sm">
+          ยกเลิก
+        </button>
+        <button id="delete-modal-confirm" class="px-5 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-medium text-sm shadow-md">
+          ยืนยันลบลิงก์
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/defaultData.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

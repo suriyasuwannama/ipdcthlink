@@ -208,7 +208,7 @@ const DEFAULT_LINKS = [
   },
   {
     "id": "link-9",
-    "title": "จำนวนผู้ป่วยปี 2569",
+    "title": "จำนวนผู้ป่วยปี 2570",
     "url": "https://docs.google.com/spreadsheets/d/1el4PsjxgqWMKvaahVwahXqmVGvFT3GeTFasUuFos52s/edit?usp=share_link",
     "categoryId": "reports-stat",
     "description": "",

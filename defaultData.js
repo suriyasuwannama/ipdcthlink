@@ -38,6 +38,19 @@ const DEFAULT_CATEGORIES = [
 
 const DEFAULT_LINKS = [
   {
+    "id": "link-1792157353389",
+    "title": "คำนวนเวลาการให้ยา",
+    "url": "https://script.google.com/macros/s/AKfycbzifopbF7XR9w4POwYTKqwKEImfVBuIA0ODWqmZUBF0zpuh682wkigD2Cnd48WL1foG/exec",
+    "categoryId": "rx-system",
+    "badge": "IPD",
+    "description": "คำนวนเวลาของการให้ยา",
+    "color": "blue",
+    "target": "_blank",
+    "isPinned": false,
+    "iconType": "preset",
+    "iconValue": "Pill"
+  },
+  {
     "id": "link-1789358634022",
     "title": "Antibiogram",
     "url": "https://drive.google.com/drive/folders/1oKJd5RtDSLyoGy3FveXLPPr-rg286MTe?usp=sharing",

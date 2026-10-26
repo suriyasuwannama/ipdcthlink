@@ -157,7 +157,7 @@ const DEFAULT_LINKS = [
   {
     "id": "link-2",
     "title": "ลงเวลาวอร์ด",
-    "url": "https://script.google.com/macros/s/AKfycby1FfOvKB5czLm9I6HSMEKl4-QN8tO1QM2nrSOCUqIf1n-h9ZFMiSjFNb4u9E0N0lUJ/exec",
+    "url": "https://script.google.com/macros/s/AKfycbxOxhkqIvBMWfhA9Nex7L1mCotUNiadfdVg9uzQL2z55Bq4uTio2iNYsaaAP91hXqpi8g/exec",
     "categoryId": "rx-system",
     "description": "",
     "iconType": "preset",

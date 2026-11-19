@@ -38,6 +38,19 @@ const DEFAULT_CATEGORIES = [
 
 const DEFAULT_LINKS = [
   {
+      "id": "link-1795093854135",
+      "title": "EMM",
+      "url": "http://10.0.3.201/newemm/",
+      "categoryId": "reports-stat",
+      "badge": "EMM",
+      "description": "ระบบรายงาน EMM",
+      "color": "emerald",
+      "target": "_blank",
+      "isPinned": false,
+      "iconType": "preset",
+      "iconValue": "Folder"
+    },
+  {
     "id": "link-1792157353389",
     "title": "คำนวนเวลาการให้ยา",
     "url": "https://script.google.com/macros/s/AKfycbzifopbF7XR9w4POwYTKqwKEImfVBuIA0ODWqmZUBF0zpuh682wkigD2Cnd48WL1foG/exec",
